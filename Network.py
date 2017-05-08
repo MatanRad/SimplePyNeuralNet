@@ -14,9 +14,14 @@ class Network:
 		# Initiate the activator function. needs to have an "Activate" function and "ActivateDeriv"
 		self.activator = activator
 
-	def FeedForward(self, a):
+		self.layersnum = len(layerSizes)
+
+	def FeedForward(self, a, track=False):
 		# b, w are the respective biases and weights for each iteration on each layer. Each iteration will calculate z[l+1] = the weighted input vector at the l+1-th layer (l is the layer of the current a vector) and then activate on it.
+		if(track): al = []
 		for b,w in zip(self.biases, self.weights):
 			a = self.activator.Activate(np.dot(w,a)+b)
+			if (track): al.append(a)
+		if (track): return (a,al)
 		return a
 
