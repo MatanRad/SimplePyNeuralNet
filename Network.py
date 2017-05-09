@@ -6,19 +6,29 @@ class Network:
 		self.sizes = [i for i in layerSizes]
 
 		# Initiate the weights matrix so that w[l,k,j] = the weight of the connection from the j-th neuron in layer l-1 to the k-th neuron in layer l.
-		self.weights = [np.random.randn(y,x) for x,y in zip(self.sizes[:-1], self.sizes[1:])]
+		self.weights = np.array([np.random.randn(y,x) for x,y in zip(self.sizes[:-1], self.sizes[1:])])
 
 		# Initiate the biases of the network such that b[i,j] = the bias of the j-th neuron in the l-th layer
-		self.biases = [np.random.randn(y,1) for y in layerSizes]
+		self.biases = np.array([np.random.randn(y,1) for y in layerSizes[1:]])
 
 		# Initiate the activator function. needs to have an "Activate" function and "ActivateDeriv"
 		self.activator = activator
 
 		self.layersnum = len(layerSizes)
 
+	def Test(self,testdata,testlabels):
+		correct = 0.0
+		for x,y in zip(testdata,testlabels):
+			res = self.FeedForward(x.reshape((x.shape[0],1)))
+			#print "shape res: " +str(res.shape)+"argmax: "+str(np.argmax(res)) + " y: "+str(y)
+			if (np.argmax(res)==y): correct +=1
+		return correct/len(testlabels)
+
+
 	def FeedForward(self, a, track=False):
 		# b, w are the respective biases and weights for each iteration on each layer. Each iteration will calculate z[l+1] = the weighted input vector at the l+1-th layer (l is the layer of the current a vector) and then activate on it.
-		if(track): al = []
+		if(len(a.shape)==1): a = a.reshape((a.shape[0],1))
+		if(track): al = [a]
 		for b,w in zip(self.biases, self.weights):
 			a = self.activator.Activate(np.dot(w,a)+b)
 			if (track): al.append(a)

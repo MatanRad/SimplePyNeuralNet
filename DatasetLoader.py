@@ -37,12 +37,12 @@ def LoadFolder(amountToLoad,folder):
 
 	ppath = os.path.join(os.path.dirname(folder), os.path.basename(folder) + ".pickle")
 	print "Saving to: "+ppath
-	with open(ppath,"w") as f:
+	with open(ppath,"wb") as f:
 		pickle.dump(letterset,f)
 	return letterset
 
 def LoadPickle(ppath):
-	with open(ppath,"r") as f:
+	with open(ppath,"rb") as f:
 		return pickle.load(f)
 	
 
