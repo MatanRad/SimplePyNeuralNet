@@ -21,7 +21,7 @@ if os.path.exists(pnetwork):
 
 if initialize:
     activator = SigmoidActivator.SigmoidActivator()
-    network = Network.Network((784,15,10),activator)
+    network = Network.Network((784,25,10),activator)
     
     with open(pnetwork, "wb") as f:
         pickle.dump(network,f)
@@ -63,7 +63,7 @@ cost = MeanSquareCost.MeanSquareCost()
 
 print "Training Set Shape: "+str(train[0][0].shape)
 print "Training the network"
-trainer.SGD(train[0],train[1],cost,0.1,100,50, test, 0.8)
+trainer.SGD(train[0],train[1],cost,0.05,100,10, test, 0.87)
 print "Saving the network"
 with open(pnetwork, "wb") as f:
         pickle.dump(network,f)

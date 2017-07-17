@@ -12,12 +12,12 @@ class Trainer:
 
         dbiases[-1] = cost.CalculateDeriv(activations[-1], targetvec) * self.network.activator.ActivatedDeriv(zs[-1])
         dweights[-1] = np.dot(dbiases[-1],activations[-2].transpose())
-        #dweights[-1] = dbiases[-1]*activations[-2]
-        #print "db shape "+str(dbiases[-1].shape) + " a " + str(len(activations))
+
         l = len(dbiases)
-        for i in reversed(range(1,len(dbiases)-1)):
-            dbiases[i] = np.dot(self.network.weights[i-1].transpose(), dbiases[i+1]) * self.network.activator.ActivatedDeriv(zs[i])
-            dweights[i] = np.dot(dbiases[i],activations[i-1].transpose())
+
+        for i in xrange(2,self.network.layersnum):
+            dbiases[-i] = np.dot(self.network.weights[-i+1].transpose(), dbiases[-i+1])
+            dweights[-i] = np.dot(dbiases[-i], activations[-i-1].transpose())
             
 
         return dbiases,dweights
